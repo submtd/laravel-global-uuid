@@ -1,1 +1,1 @@
-# laravel-global-uuids
+# laravel-global-uuid

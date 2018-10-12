@@ -1,0 +1,27 @@
+{
+    "name": "submtd/laravel-global-uuid",
+    "description": "Global uuids for Laravel models.",
+    "authors": [
+        {
+            "name": "Steve Harmeyer",
+            "email": "harmeyersteve@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Submtd\\LaravelGlobalUuid\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Submtd\\LaravelGlobalUuid\\Providers\\LaravelGlobalUuidServiceProvider"
+            ]
+        }
+    }
+}
