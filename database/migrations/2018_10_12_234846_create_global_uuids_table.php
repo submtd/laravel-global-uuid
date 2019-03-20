@@ -14,8 +14,8 @@ class CreateGlobalUuidsTable extends Migration
     public function up()
     {
         Schema::create('global_uuids', function (Blueprint $table) {
-            $table->uuid('uuid')->primary();
-            $table->nullableMorphs('model');
+            $table->binary('uuid')->primary();
+            $table->morphs('model');
             $table->unique(['model_type', 'model_id']);
         });
     }

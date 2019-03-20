@@ -12,10 +12,7 @@
     "autoload": {
         "psr-4": {
             "Submtd\\LaravelGlobalUuid\\": "src/"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+        }
     },
     "extra": {
         "laravel": {
