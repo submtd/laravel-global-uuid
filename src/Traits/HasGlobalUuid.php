@@ -3,7 +3,8 @@
 namespace Submtd\LaravelGlobalUuid\Traits;
 
 use Submtd\LaravelGlobalUuid\Models\GlobalUuid;
-use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * HasGlobalUuid trait
@@ -16,23 +17,24 @@ trait HasGlobalUuid
     {
         static::retrieved(function ($model) {
             $model->uuid = $model->globalUuid->uuid;
+            unset($model->globalUuid);
         });
         static::created(function ($model) {
-            GlobalUuid::create([
-                'uuid' => (string) Str::uuid(),
-                'model_type' => get_class($model),
-                'model_id' => $model->id,
-            ]);
+            $model->globalUuid()->create();
+            $model->uuid = $model->globalUuid->uuid;
+            unset($model->globalUuid);
         });
-    }
-
-    public function uuid()
-    {
-        return $this->uuid;
     }
 
     public function globalUuid()
     {
-        return $this->morphOne(GlobalUuid::class, 'model');
+        return $this->morphOne(config('laravel-global-uuid.uuid_model', GlobalUuid::class), 'model');
+    }
+
+    public function scopeUuid(Builder $builder, string $uuid)
+    {
+        return $builder->whereHas('globalUuid', function ($query) use ($uuid) {
+            $query->where('uuid', Uuid::fromString($uuid)->getBytes());
+        });
     }
 }

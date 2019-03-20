@@ -8,5 +8,5 @@ return [
      * you choose to use a custom uuid model, it must extend the core
      * uuid model \Submtd\LaravelGlobalUuids\Models\GlobalUuid::class
      */
-    'uuid_model' => \Submtd\LaravelGlobalUuids\Models\GlobalUuid::class,
+    'uuid_model' => \Submtd\LaravelGlobalUuid\Models\GlobalUuid::class,
 ];
