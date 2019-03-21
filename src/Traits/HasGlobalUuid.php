@@ -13,28 +13,61 @@ use Illuminate\Database\Eloquent\Builder;
  */
 trait HasGlobalUuid
 {
+    /**
+     * trait's boot method
+     */
     public static function bootHasGlobalUuid()
     {
-        static::retrieved(function ($model) {
-            $model->uuid = $model->globalUuid->uuid;
-            unset($model->globalUuid);
-        });
+        // create the global uuid when creating a model
         static::created(function ($model) {
             $model->globalUuid()->create();
             $model->uuid = $model->globalUuid->uuid;
-            unset($model->globalUuid);
+        });
+        // delete the global uuid when deleting a model
+        static::deleting(function ($model) {
+            $model->globalUuid->delete();
         });
     }
 
+    /**
+     * polymorphic relationship to the global uuid model
+     */
     public function globalUuid()
     {
         return $this->morphOne(config('laravel-global-uuid.uuid_model', GlobalUuid::class), 'model');
     }
 
+    /**
+     * uuid local query scope
+     * allows $model->uuid($uuid)->first();
+     */
     public function scopeUuid(Builder $builder, string $uuid)
     {
         return $builder->whereHas('globalUuid', function ($query) use ($uuid) {
             $query->where('uuid', Uuid::fromString($uuid)->getBytes());
         });
+    }
+
+    /**
+     * uuidIn local query scope
+     * allows $model->uuidIn($uuidArray)->get();
+     */
+    public function scopeUuidIn(Builder $builder, array $uuids)
+    {
+        $uuids = array_map(function ($uuid) {
+            return Uuid::fromString($uuid)->getBytes();
+        }, $uuids);
+        return $builder->whereHas('globalUuid', function ($query) use ($uuids) {
+            $query->whereIn('uuid', $uuids);
+        });
+    }
+
+    /**
+     * get uuid attribute
+     * allows $model->uuid
+     */
+    public function getUuidAttribute()
+    {
+        return $this->globalUuid->uuid;
     }
 }
