@@ -7,7 +7,9 @@
             "email": "harmeyersteve@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "watson/rememberable": "^2.0"
+    },
     "require-dev": {},
     "autoload": {
         "psr-4": {

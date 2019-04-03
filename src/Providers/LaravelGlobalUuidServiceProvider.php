@@ -17,7 +17,7 @@ class LaravelGlobalUuidServiceProvider extends ServiceProvider
     {
         // set up config file
         $this->mergeConfigFrom(__DIR__ . '/../../config/laravel-global-uuid.php', 'laravel-global-uuid');
-        $this->publishes([__DIR__ . '/../../config' => config_path('middlehigh')], 'config');
+        $this->publishes([__DIR__ . '/../../config' => config_path()], 'config');
         // set up migrations
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
         $this->publishes([__DIR__ . '/../../database' => database_path()], 'migrations');

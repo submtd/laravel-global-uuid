@@ -5,9 +5,18 @@ namespace Submtd\LaravelGlobalUuid\Models;
 use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Database\Eloquent\Builder;
+use Watson\Rememberable\Rememberable;
 
 class GlobalUuid extends Model
 {
+    use Rememberable;
+
+    /**
+     * @var $rememberCacheTag
+     * tag for the rememberable trait
+     */
+    public $rememberCacheTag = 'global_uuid_queries';
+
     /**
      * @var $primaryKey
      * sets the primary key on the table to be uuid
